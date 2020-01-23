@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr">
-
+<?php
+  include('connexion.php');
+/*  $dip= $bd->query("SELECT DISTINCT(`Regroupement de diplômes`) FROM `diplomes` ORDER BY (`Regroupement de diplômes`) ASC;" );
+  $sect=$bd->query("SELECT DISTINCT `Secteur disciplinaire` FROM `diplomes` ORDER BY `Secteur disciplinaire` ASC;");
+  $reg=$bd->query("SELECT DISTINCT(`Région du siège de l’établissement`) FROM `diplomes` ORDER BY `Région du siège de l’établissement` ASC;");
+*/
+?>
 <head>
   <meta charset="utf-8">
   <title > Etablissement supérieur </title>
@@ -30,7 +36,6 @@
   <select  name="type_diplome">
 
   <?php
-
       $json = file_get_contents("https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-diplomes-et-formations-prepares-etablissements-publics&sort=-rentree_lib&facet=diplome_rgp&refine.rentree_lib=2017-18");
       $parsed_json = json_decode($json,true);
       $var = $parsed_json['facet_groups'][0]['facets'];
