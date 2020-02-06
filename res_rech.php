@@ -22,7 +22,7 @@
 	</header>
   <nav>
     <ul>
-      <li><a class="active" href="index.php">Home</a></li>
+      <li><a class="active" href="index.php">Accueil</a></li>
       <li><a href="#news">News</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="#about">About</a></li>
@@ -171,6 +171,7 @@
             }
 
         echo "<script>";
+
         for ($a=0 ;$a<sizeof($localisation1);$a++) {
             echo "var m = L.marker([" . $localisation1[$a] . "," . $localisation2[$a] . "]).addTo(mymap);";
             echo "m.bindPopup(\"<b>" . $titre_etablissement[$a] . "</b><a href ='" .$list_url[$a] . "'>Site</a>\");";

@@ -1,18 +1,27 @@
 
 .mainTitle{
 	text-align: center;
-	font-family: Arial;
-	width: 500px;
+	font: italic 1.2em "Fira Sans", serif;;
+	width: 700px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 0px;
 
 }
 
+.b{
+	background: #eee;
+}
 .phrase{
-	font-family: Toms Handwriting ;
-	font-size: 30px;
-	margin:150px;
+	position: absolute;
+	font: italic 1.2em "Fira Sans", serif;;
+	font-size: 32px;
+	left: 25%;
+	top: 32%;
+	border: 2px solid black;
+	display: inline-block;
+	border-radius: 15px;
+
 }
 
 .formulaire{
@@ -28,11 +37,14 @@
 
 
 .bouton {
+	position: absolute;
    background-color: white;
   color: black;
   border: 2px solid #333;
   padding: 16px 32px;
   text-align: center;
+	bottom: 30%;
+	right: 10%;
 
   text-decoration: none;
   display: inline-block;
@@ -66,7 +78,7 @@
   margin-top: 50px;
 
 }
-
+/** NavBar**/
 ul {
   list-style-type: none;
   margin: 0;
@@ -95,6 +107,7 @@ img {
 	float: right;
 }
 
+/** Map **/
 #mapid { height: 180px;
 margin-left: auto;
 margin-right: auto;
@@ -122,4 +135,79 @@ margin-top: 50px; }
   text-align: left;
   background-color: #333;
   color: white;
+}
+
+
+
+/** Listes déroulantes**/
+.dropbtn1 {
+  background-color: #333;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+	position: absolute;
+	top: 50%;
+	left: 5%;
+}
+.dropbtn2 {
+  background-color: #333;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+	position: absolute;
+	top: 50%;
+	left: 30%;
+}
+.dropbtn3 {
+  background-color: #333;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+	position: absolute;
+	top: 50%;
+	left: 70%;
+}
+
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: absolute;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
 }
