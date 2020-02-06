@@ -117,6 +117,8 @@
   </tr>
 
   <?php
+       include("fonctions.php");
+        include("api.php");
         if (isset($_GET['type_diplome'])){
             $type_diplome=$_GET['type_diplome'];
         }
@@ -131,11 +133,12 @@
         $localisation1= array();
         $localisation2= array();
         $titre_etablissement=array();
-        $list_url =array( );
-        $json= file_get_contents("https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-diplomes-et-formations-prepares-etablissements-publics&rows=1000&sort=-rentree_lib&facet=rentree_lib&facet=etablissement_type2&facet=etablissement_type_lib&facet=etablissement&facet=etablissement_lib&facet=champ_statistique&facet=dn_de_lib&facet=cursus_lmd_lib&facet=diplome_rgp&facet=diplome_lib&facet=typ_diplome_lib&facet=diplom&facet=niveau_lib&facet=disciplines_selection&facet=gd_disciscipline_lib&facet=discipline_lib&facet=sect_disciplinaire_lib&facet=spec_dut_lib&facet=localisation_ins&facet=com_etab&facet=com_etab_lib&facet=uucr_etab&facet=uucr_etab_lib&facet=dep_etab&facet=dep_etab_lib&facet=aca_etab&facet=aca_etab_lib&facet=reg_etab&facet=reg_etab_lib&facet=com_ins&facet=com_ins_lib&facet=uucr_ins&facet=dep_ins&facet=dep_ins_lib&facet=aca_ins&facet=aca_ins_lib&facet=reg_ins&facet=reg_ins_lib&refine.rentree_lib=2017-18");
-        $json_geo=file_get_contents("https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-etablissements-enseignement-superieur&rows=322&facet=uai&facet=type_d_etablissement&facet=com_nom&facet=dep_nom&facet=aca_nom&facet=reg_nom&facet=pays_etranger_acheminement");
-        $decode_json_geo=json_decode($json_geo,true);
-        $decode_json = json_decode($json,true);
+        $list_url =array();
+
+        $decode_json_geo=json_deco("https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-etablissements-enseignement-superieur&rows=322&facet=uai&facet=type_d_etablissement&facet=com_nom&facet=dep_nom&facet=aca_nom&facet=reg_nom&facet=pays_etranger_acheminement");
+        $decode_json = json_deco("https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-diplomes-et-formations-prepares-etablissements-publics&rows=1000&start=100&refine.rentree_lib=2017-18");
+        $compteur=0;
+        $nb_results_by_page=20;
         foreach ($decode_json['records'] as $variable ) {
               $var=$variable['fields']['sect_disciplinaire'];
 
@@ -147,11 +150,10 @@
               $s=$decode['sect_disciplinaire_lib'];
               $et=$decode['etablissement'];
 
-
-
               if ($type_diplome==$d || $type_diplome=="Type diplome") {
                         if ($secteur_disciplinaire==$s || $secteur_disciplinaire=="Filière") {
                             if ($region==$r || $region=="Région") {
+                              $compteur++;
                               echo "<tr><td>$d</td><td>$l</td><td>$e</td><td>$r</td></tr>";
                               foreach ($decode_json_geo['records'] as $geo){
                                   if (isset($geo['fields']['coordonnees']) && isset($geo['fields']['uai'])){
@@ -170,16 +172,21 @@
 
             }
 
+
+            echo "Nombre total de résultats : "."".$compteur;
+
         echo "<script>";
 
         for ($a=0 ;$a<sizeof($localisation1);$a++) {
             echo "var m = L.marker([" . $localisation1[$a] . "," . $localisation2[$a] . "]).addTo(mymap);";
-            echo "m.bindPopup(\"<b>" . $titre_etablissement[$a] . "</b><a href ='" .$list_url[$a] . "'>Site</a>\");";
+            echo "m.bindPopup(\"<b>" . $titre_etablissement[$a] . "</b><p><a href ='" .$list_url[$a] . "'>Site</a></p>\");";
         }
         echo "</script>"
    ?>
 
 </table>
+
+
 
 
 </body>
