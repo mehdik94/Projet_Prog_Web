@@ -19,7 +19,7 @@
 
     </header>
     <ul>
-  <li><a class="active" href="index.php">Accueil</a></li>
+  <li><a class="active" href="res_rech.php">Accueil</a></li>
   <li><a href="#news">News</a></li>
   <li><a href="#contact">Contact</a></li>
   <li><a href="#about">About</a></li>
@@ -49,7 +49,7 @@
    ?>
   </select>
 
-   <input class="bouton button3"  type="submit">
+   <input class="bouton button3"  type="submit"  >
 
 </form>
 

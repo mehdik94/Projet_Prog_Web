@@ -114,11 +114,13 @@
     <th>Libellé Formation</th>
     <th>Nom de létablissement </th>
     <th>Région</th>
+    <th> Lien vers la fiche de la formation </th>
   </tr>
 
   <?php
        include("fonctions.php");
         include("api.php");
+        include('connexion.php');
         if (isset($_GET['type_diplome'])){
             $type_diplome=$_GET['type_diplome'];
         }
@@ -133,7 +135,9 @@
         $localisation1= array();
         $localisation2= array();
         $titre_etablissement=array();
+        $depart= array();
         $list_url =array();
+        $adresse_uai= array();
 
         $decode_json_geo=json_deco("https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-etablissements-enseignement-superieur&rows=322&facet=uai&facet=type_d_etablissement&facet=com_nom&facet=dep_nom&facet=aca_nom&facet=reg_nom&facet=pays_etranger_acheminement");
         $decode_json = json_deco("https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-diplomes-et-formations-prepares-etablissements-publics&rows=1000&start=100&refine.rentree_lib=2017-18");
@@ -141,7 +145,6 @@
         $nb_results_by_page=20;
         foreach ($decode_json['records'] as $variable ) {
               $var=$variable['fields']['sect_disciplinaire'];
-
               $decode=$variable['fields'];
               $d=$decode['diplome_rgp'];
               $l=$decode['libelle_intitule_1'];
@@ -154,13 +157,19 @@
                         if ($secteur_disciplinaire==$s || $secteur_disciplinaire=="Filière") {
                             if ($region==$r || $region=="Région") {
                               $compteur++;
-                              echo "<tr><td>$d</td><td>$l</td><td>$e</td><td>$r</td></tr>";
+                              echo "<tr><td>$d</td><td>$l</td><td>$e</td><td>$r</td>
+                              <form method=GET action="fiche.php">
+                              <input
+                              <td><button href="fiche.php">Lien</button</td>
+                              </tr>";
                               foreach ($decode_json_geo['records'] as $geo){
-                                  if (isset($geo['fields']['coordonnees']) && isset($geo['fields']['uai'])){
+                                  if (isset($geo['fields']['coordonnees']) && isset($geo['fields']['uai']) && isset($geo['fields']['adresse_uai']) && isset($geo['fields']['dep_nom']) ){
                                     if ($geo['fields']['uai']==$et){
                                       $localisation1[]=$geo['fields']['coordonnees'][0];
                                       $localisation2[]=$geo['fields']['coordonnees'][1];
                                       $titre_etablissement[]=$geo['fields']['uo_lib'];
+                                      $adresse_uai[]=$geo['fields']['adresse_uai'];
+                                      $depart[]=$geo['fields']['dep_nom'];
                                       $list_url[]=$geo['fields']['url'];
                                     }
                                   }
@@ -178,8 +187,19 @@
         echo "<script>";
 
         for ($a=0 ;$a<sizeof($localisation1);$a++) {
+          $requete="SELECT `count` FROM `click_ecole` WHERE `link`= '".$list_url[$a]."';";
+          $req= $bd->query($requete);
+          $row=$req->fetch();
+          $count=0;
+
+          if ($row==false){
+            $count=0;
+          }else{
+              $count=$row['count'];
+          }
+
             echo "var m = L.marker([" . $localisation1[$a] . "," . $localisation2[$a] . "]).addTo(mymap);";
-            echo "m.bindPopup(\"<b>" . $titre_etablissement[$a] . "</b><p><a href ='" .$list_url[$a] . "'>Site</a></p>\");";
+            echo "m.bindPopup(\"<b>" . $titre_etablissement[$a] . "</b><br><a href =intermediaire.php?link=$list_url[$a]". ">Site</a></br><br>Nombre de clics vers ce site: ".$count."</br><br>Adresse:".$adresse_uai[$a]."</br><br> Département: ".$depart[$a]."</br>\");";
         }
         echo "</script>"
    ?>
