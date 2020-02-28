@@ -144,7 +144,9 @@
         $compteur=0;
         $nb_results_by_page=20;
         foreach ($decode_json['records'] as $variable ) {
+              $liste=array();
               $var=$variable['fields']['sect_disciplinaire'];
+              $id=$variable['recordid'] ;
               $decode=$variable['fields'];
               $d=$decode['diplome_rgp'];
               $l=$decode['libelle_intitule_1'];
@@ -152,15 +154,30 @@
               $r=$decode['reg_ins_lib'];
               $s=$decode['sect_disciplinaire_lib'];
               $et=$decode['etablissement'];
+              $effectif_total=$decode['effectif'];
+              $departement=$decode['dep_etab_lib'];
+
+              $liste[] =$id;
+              $liste[] =$d;
+              $liste[] =$l;
+              $liste[] =$e;
+              $liste[] =$r;
+              $liste[] =$s;
+              $liste[] =$departement;
+              $liste[] =$effectif_total;
+            //  <a href=fiche.php?id_formation=".$id.">Lien</a>
 
               if ($type_diplome==$d || $type_diplome=="Type diplome") {
                         if ($secteur_disciplinaire==$s || $secteur_disciplinaire=="Filière") {
                             if ($region==$r || $region=="Région") {
                               $compteur++;
                               echo "<tr><td>$d</td><td>$l</td><td>$e</td><td>$r</td>
-                              <form method=GET action="fiche.php">
-                              <input
-                              <td><button href="fiche.php">Lien</button</td>
+
+                              <td><form method='POST' action='fiche.php'>
+                              <input  name='id_formation' type='hidden' value='".json_encode($liste, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_UNESCAPED_UNICODE )."'>
+                              <input type='submit' value='Voir la fiche'>
+                              </form></td>
+
                               </tr>";
                               foreach ($decode_json_geo['records'] as $geo){
                                   if (isset($geo['fields']['coordonnees']) && isset($geo['fields']['uai']) && isset($geo['fields']['adresse_uai']) && isset($geo['fields']['dep_nom']) ){

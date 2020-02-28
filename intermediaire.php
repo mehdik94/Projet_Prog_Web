@@ -21,6 +21,7 @@ $result= $bd->query($reque);
 $req->closeCursor();
 $result->closeCursor();
 header('Location:'.$links);
+exit();
 
 
 

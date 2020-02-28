@@ -10,6 +10,7 @@
 
            public function displayDropDown($name){
 
+
             if ($name=="Type diplome"){
                   $this->middle_of_url="&sort=-rentree_lib&facet=diplome_rgp&refine.rentree_lib=2017-18";
             }
@@ -24,10 +25,13 @@
             $json = file_get_contents($link_key);
             $parsed_json = json_decode($json,true);
             $var = $parsed_json['facet_groups'][0]['facets'];
+
             echo "<option>";
             echo $name;
             echo "</option>";
+            $lst= array() ;
             foreach ($var as $value ) {
+            
               echo "<option >";
               echo $value['name'];
               echo "</option>\n";
