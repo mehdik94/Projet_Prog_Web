@@ -31,9 +31,12 @@
             echo "</option>";
             $lst= array() ;
             foreach ($var as $value ) {
-            
+              $lst[]= $value['name'];
+            }
+            sort($lst);
+            foreach ($lst as $value ) {
               echo "<option >";
-              echo $value['name'];
+              echo $value;
               echo "</option>\n";
             }
           }
