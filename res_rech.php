@@ -23,9 +23,9 @@
   <nav>
     <ul>
       <li><a class="active" href="index.php">Accueil</a></li>
-      <li><a href="#news">News</a></li>
-      <li><a href="#contact">Contact</a></li>
-      <li><a href="#about">About</a></li>
+      <li><a href="https://github.com/mehdik94/Projet_Prog_Web">Github</a></li>
+      <li><a href="https://www.linkedin.com/in/mehdi-koumad-048980174/">Contact</a></li>
+
     </ul>
   </nav>
 
@@ -151,10 +151,12 @@
               $d=$decode['diplome_rgp'];
               $l=$decode['libelle_intitule_1'];
               $e=$decode['etablissement_lib'];
+              $et=$decode['etablissement'];
               $r=$decode['reg_ins_lib'];
               $s=$decode['sect_disciplinaire_lib'];
-              $et=$decode['etablissement'];
               $effectif_total=$decode['effectif'];
+              $effectif_homme=$decode['hommes'];
+              $effectif_femme=$decode['femmes'];
               $departement=$decode['dep_etab_lib'];
 
               $liste[] =$id;
@@ -165,14 +167,18 @@
               $liste[] =$s;
               $liste[] =$departement;
               $liste[] =$effectif_total;
-            //  <a href=fiche.php?id_formation=".$id.">Lien</a>
+              $liste[] =$effectif_homme;
+              $liste[] =$effectif_femme;
 
+
+              // Affiche le tableau principal
               if ($type_diplome==$d || $type_diplome=="Type diplome") {
                         if ($secteur_disciplinaire==$s || $secteur_disciplinaire=="Filière") {
                             if ($region==$r || $region=="Région") {
                               $compteur++;
-                              echo "<tr><td>$d</td><td>$l</td><td>$e</td><td>$r</td>
 
+                              //Envoi vers la fiche de la formation
+                              echo "<tr><td>$d</td><td>$l</td><td>$e</td><td>$r</td>
                               <td><form method='POST' action='fiche.php'>
                               <input  name='id_formation' type='hidden' value='".json_encode($liste, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_UNESCAPED_UNICODE )."'>
                               <input type='submit' value='Voir la fiche'>
@@ -180,8 +186,11 @@
 
                               </tr>";
                               foreach ($decode_json_geo['records'] as $geo){
-                                  if (isset($geo['fields']['coordonnees']) && isset($geo['fields']['uai']) && isset($geo['fields']['adresse_uai']) && isset($geo['fields']['dep_nom']) ){
-                                    if ($geo['fields']['uai']==$et){
+
+                                if (isset($geo['fields']['coordonnees']) && isset($geo['fields']['uai'])){
+
+                                 if ($geo['fields']['uai']==$et){
+
                                       $localisation1[]=$geo['fields']['coordonnees'][0];
                                       $localisation2[]=$geo['fields']['coordonnees'][1];
                                       $titre_etablissement[]=$geo['fields']['uo_lib'];
@@ -199,26 +208,27 @@
             }
 
 
-            echo "Nombre total de résultats : "."".$compteur;
+            echo "Nombre total de résultats : ".$compteur."";
 
-        echo "<script>";
+            echo "<script>";
 
-        for ($a=0 ;$a<sizeof($localisation1);$a++) {
-          $requete="SELECT `count` FROM `click_ecole` WHERE `link`= '".$list_url[$a]."';";
-          $req= $bd->query($requete);
-          $row=$req->fetch();
-          $count=0;
+            for ($a=0 ;$a<sizeof($localisation1);$a++) {
+             $requete="SELECT `count` FROM `click_ecole` WHERE `link`= '".$list_url[$a]."';";
+              $req= $bd->query($requete);
+              $row=$req->fetch();
+              $count=0;
 
-          if ($row==false){
-            $count=0;
-          }else{
-              $count=$row['count'];
-          }
+              if ($row==false){
+                $count=0;
+              }else{
+                  $count=$row['count'];
+              }
 
-            echo "var m = L.marker([" . $localisation1[$a] . "," . $localisation2[$a] . "]).addTo(mymap);";
-            echo "m.bindPopup(\"<b>" . $titre_etablissement[$a] . "</b><br><a href =intermediaire.php?link=$list_url[$a]". ">Site</a></br><br>Nombre de clics vers ce site: ".$count."</br><br>Adresse:".$adresse_uai[$a]."</br><br> Département: ".$depart[$a]."</br>\");";
-        }
-        echo "</script>"
+              // Affiche des marqueurs personnalisés
+                echo "var m = L.marker([" . $localisation1[$a] . "," . $localisation2[$a] . "]).addTo(mymap);";
+                echo "m.bindPopup(\"<b>" . $titre_etablissement[$a] . "</b><br><a href =intermediaire.php?link=$list_url[$a]". ">Site</a></br><br>Nombre de clics vers ce site: ".$count."</br><br>Adresse:".$adresse_uai[$a]."</br><br> Département: ".$depart[$a]."</br>\");";
+            }
+            echo "</script>"
    ?>
 
 </table>

@@ -1,6 +1,6 @@
 <?php
        class Api{
-          private $end_of_url = "&apikey=5f7fcf6a5e2bac8b7eade848e8bb560624e0c6f676e122d7312672ba";
+          private $end_of_url = "&apikey=27f08b0eebc6533478f945842c01d6149b77dafa8324e15c2750353a";
           private $link="https://data.enseignementsup-recherche.gouv.fr/api/records/1.0/search/?dataset=fr-esr-principaux-diplomes-et-formations-prepares-etablissements-publics";
           private $middle_of_url;
 
@@ -9,8 +9,6 @@
 
 
            public function displayDropDown($name){
-
-
             if ($name=="Type diplome"){
                   $this->middle_of_url="&sort=-rentree_lib&facet=diplome_rgp&refine.rentree_lib=2017-18";
             }
