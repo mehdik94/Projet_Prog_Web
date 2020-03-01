@@ -1,4 +1,9 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
 <link rel="stylesheet" href="style.css">
+<title>Fiche</title>
+</head>
 <body>
 	<header>
   	<h1 class="round3 mainTitle" >SupFormation </h1>
@@ -75,3 +80,4 @@ include('connexion.php');
 
  ?>
 </body>
+</html>
